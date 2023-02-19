@@ -62,8 +62,12 @@ const autores = [
 
         let {id} = req.params;
         let index = BuscaLivro(id);
+        livros.splice(index )
         res.json(livros);
-    })
+
+        res.send(` Livro ${id} removido com sucesso `)
+    
+      })
 
   export default App ;
 
