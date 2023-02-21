@@ -1,30 +1,27 @@
+import express from 'express';
+import mongoose from "mongoose";
+import db from "./Config/dbConnect.js";
+import livros from './Model/Livro.js';
+import routes from './routes/index.js';
 
-import express from 'express'
+db.on("err", console.log.bind(console,'Error de conexão'));
+db.once('open', ()=>{
+  console.log('conexão com o banco feita com sucesso')
+});
 
 const App = express();
 
-App.use(express.json())
+App.use(express.json());
+mongoose.set('strictQuery', true);
 
-const livros = [
-    {id: 1, "titulo": "Senhor dos Aneis"},
-    {id: 2, "titulo": "O Hobbit"}
-  ]
+routes(App);
 
 const autores = [
     { id: 1 , "Autor" : "Fulano"} ,
     { id: 2 , "Autor" : "Sicrano"}
 ]
 
-  App.get('/', (req, res) => {
-
-    res.status(200).send('Server Online')
-  })
-
-  App.get('/livros', (req, res) => {
-
-    res.status(200).json(livros)
-  })
-  
+ 
   App.get('/autores ' , (req,res) => {
     res.status(200).json(autores)
   })
@@ -53,7 +50,7 @@ const autores = [
 
     let index = BuscaLivro(req.params.id);
     
-    livros[index].titulo = req.body.titulo
+    livros[index].titulo = req.body.titulo 
   
     res.status(200).json(livros).send('O Livro foi Alterado com sucesso')
 })
