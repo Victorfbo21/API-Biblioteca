@@ -3,21 +3,25 @@ import livros from "../Model/Livro.js";
 class LivroController {
 
     static listarLivros = (req,res) =>{
-        livros.find((err, livros) => {
+        livros.find()
+          .populate('autor')
+          .exec((err, livros) => {
             res.status(200).json(livros)
           })
     }
 
     static listarLivroId = (req,res) => {
         const id = req.params.id;
-        livros.findById(id, (err, livros) => {
-            if(err){
-                res.status(400).send({message : `${err.message} - Id do livro não encontrado`})
-            }
-            else{
-                res.status(200).send(livros);
-            }
-        });
+        livros.findById(id)
+            .populate('autor','nome')
+            .exec((err, livros) => {
+                if(err){
+                    res.status(400).send({message : `${err.message} - Id do livro não encontrado`})
+                }
+                else{
+                    res.status(200).send(livros);
+                }
+            });
 
     }
 
@@ -57,6 +61,22 @@ class LivroController {
                 res.status(500).send({message : err.message})
             }
         })
+    }
+
+    static listarLivroPorEditora = (req,res) =>{
+        const editora = req.query.editora;
+
+        livros.find({'editora': editora}, {}, (err,livros) =>{
+           if(!err){
+                res.status(200).send(livros);
+           }
+           else{
+            res.status(400).send({message: err.message})
+           }
+        });
+
+        
+
     }
 
 
