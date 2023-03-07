@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from "mongoose";
-import db from "./Config/dbConnect.js";
 import routes from './routes/index.js';
 
 

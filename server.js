@@ -1,6 +1,9 @@
-import express from 'express'
 import App from "./src/App.js"
+import { config } from 'dotenv'
 
+config({
+  path: '.env'
+})
 
 const port = 8080;
 
